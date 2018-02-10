@@ -1,21 +1,218 @@
 <div class = "chart-container">
 	<canvas id="myChart"></canvas>
 	<script>
-		var ctx = document.getElementById('myChart').getContext('2d')
-		var chart = new Chart(ctx, {
-			type: 'line',
-			data: {
-				labels: ['January','Febuary','March','April','May','June','July'],
+		$(document).ready(function() {
+			var date = new Date(Date.now());
+			var currentYear = getCurrentYear(date);
+			var currentMonth = getCurrentMonth(date) + 2;
+			var currentUnixTime = Date.now();
+			threeYearData = {
+				labels: [currentYear-2,currentYear-1,currentYear],
 				datasets: [{
-					label:'My first Database',
-	            	borderColor: 'rgb(0, 0, 0)',
-	            	data: [0, 10, 5, 2, 20, 30, 45],
+		            borderColor: 'green',
+		           	data: [10,32,44],
+		           	yAxisID:"y-axis-usd"
+				}],
+					
+			}
 
-				}]
-			},
-			options: {}
+			oneYearData = {
+				labels: get12MonthRange(currentMonth),
+				datasets: [{
+		            borderColor: 'green',
+		           	data: [0, 10, 5, 2, 20, 30, 45, 25, 89 , 10, 32 , 44],
+		           	yAxisID:"y-axis-usd"
+				}],
+					
+			}
+			sixMonthData = {
+				labels: get6MonthRange(currentMonth),
+				datasets: [{
+		            borderColor: 'green',
+		           	data: [0, 10, 5, 2, 20, 30],
+		           	yAxisID:"y-axis-usd"
+				}],
+			}
+			var defautChartName = "1-Year Prices"
+			createChart(oneYearData,defautChartName);
+
+
 		})
-		chart.canvas.parentNode.style.width ="90%";
+		function getCurrentYear(date) {
+			return date.getFullYear();
+		}
+
+		function getCurrentMonth(date) {
+			return date.getMonth();
+		}
+		function get12MonthRange(currentMonth) {
+			//currentMonth args is in index 0-11 for jan to dec
+			switch (currentMonth) {
+				case 0:
+					return ['Febuary','March','April','May','June','July','August','September','October','November','December','January'];
+				case 1:
+					return ['March','April','May','June','July','August','September','October','November','December','January','Febuary'];
+				case 2:
+					return ['April','May','June','July','August','September','October','November','December','January','Febuary','March'];
+				case 3:
+					return ['May','June','July','August','September','October','November','December','January','Febuary','March','April'];
+				case 4:
+					return ['June','July','August','September','October','November','December','January','Febuary','March','April','May'];
+				case 5:
+					return ['July','August','September','October','November','December','January','Febuary','March','April','May','June'];
+				case 6:
+					return ['August','September','October','November','December','January','Febuary','March','April','May','June','July'];
+				case 7:
+					return ['September','October','November','December','January','Febuary','March','April','May','June','July','August'];
+				case 8:
+					return ['October','November','December','January','Febuary','March','April','May','June','July','August','September'];
+				case 9:
+					return ['November','December','January','Febuary','March','April','May','June','July','August','September','October'];
+				case 10:
+					return ['December','January','Febuary','March','April','May','June','July','August','September','October','November'];
+				case 11:
+					return ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+				
+			}
+		}
+		function get6MonthRange(currentMonth) {
+			switch (currentMonth) {
+				case 0:
+					return ['August','September','October','November','December','January'];
+				case 1:
+					return ['September','October','November','December','January','Febuary'];
+				case 2:
+					return ['October','November','December','January','Febuary','March'];
+				case 3:
+					return ['November','December','January','Febuary','March','April'];
+				case 4:
+					return ['December','January','Febuary','March','April','May'];
+				case 5:
+					return ['January','Febuary','March','April','May','June'];
+				case 6:
+					return ['Febuary','March','April','May','June','July'];
+				case 7:
+					return ['March','April','May','June','July','August'];
+				case 8:
+					return ['April','May','June','July','August','September'];
+				case 9:
+					return ['May','June','July','August','September','October'];
+				case 10:
+					return ['June','July','August','September','October','November'];
+				case 11:
+					return ['July','August','September','October','November','December'];
+				
+			}
+
+		}
+		
+		function changeChart(type) {
+			if(type == '3y') {
+				var chartName = "3-Year Prices"
+				createChart(threeYearData,chartName)
+			}
+			if(type == '1y') {
+				var chartName = "1-Year Prices"
+				createChart(oneYearData,chartName)
+
+			}
+			if(type == '6m') {
+				var chartName = "6-Month Prices"
+				createChart(sixMonthData,chartName)
+			}
+			if(type == '7d') {
+				var chartName = "7-Day Prices"
+				createChart(sixMonthData,chartName)
+			}
+			if(type == '24hr') {
+				var chartName = "24-Hour Prices"
+				createChart(sixMonthData,chartName)
+			}
+		}
+
+		function createChart(newData,chartName) {
+			config = createConfig(newData,chartName);
+			var ctx = document.getElementById('myChart').getContext('2d')
+			var chart = new Chart(ctx, config)
+			chart.canvas.parentNode.style.width ="90%";
+		}
+		
+		function createConfig(newData,chartName) {
+			var configInner = {
+				type: 'line',
+				data: newData,
+				options: {
+					responsive: true,
+	                title:{
+	                    display: true,
+	                    text: chartName,
+	                    fontColor: 'black',
+	                    fontSize: 20
+	                },
+	                scales: {
+	                	xAxes: [{
+	                		scaleLabel: {
+	                			fontColor:'black',
+	                		},
+	                		gridLines: {
+	                			display: false,
+	                			drawBorder: false,
+	                		},
+	                		ticks: {
+	                			fontColor: 'black'
+	                		}
+	                		
+	                	}],
+
+	                    yAxes: [{
+	                    	//y axis for USD
+	                    	type:'linear',
+	                    	display: true,
+	                    	position:'left',
+	                    	id:'y-axis-usd',
+	                    	scaleLabel: {
+	                    		display: true,
+	                    		labelString: 'Price (USD)',
+	                    		fontColor: 'green',
+	                    	},
+	                        gridLines: {
+	                            drawBorder: true,
+	                            display: false,
+	                        },
+	                        ticks : {
+	                        	fontColor: 'green'
+	                        }
+	                        
+	                    },{
+	                    	//y axis for btc
+	                    	type:'linear',
+	                    	display: true,
+	                    	position:'right',
+	                    	id:'y-axis-btc',
+	                    	scaleLabel: {
+	                    		display: true,
+	                    		labelString: 'Price (BTC)',
+	                    		fontColor:'orange',
+	                    	},
+	                        gridLines: {
+	                            drawBorder: false,
+	                            display: false,
+	                        },
+	                        ticks : {
+	                        	fontColor: 'orange'
+	                        }
+	                    }]
+
+	                },
+	                //setting the label of data to dissapear
+	                legend : {
+	                	display: false
+	                }
+	            }
+			};
+			return configInner;
+		}
+		
 
 	</script>
 </div>
