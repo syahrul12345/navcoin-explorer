@@ -1,0 +1,58 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Chart.js -->
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+
+<!--- FONT AWESOME -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!---SITE CSS -->
+<link rel = "stylesheet" href = "styles.css" />
+
+<script>
+	$(document).ready(function() {
+		var url = "https://api.coinmarketcap.com/v1/ticker/nav-coin/"
+		$.getJSON(url,function(json) {
+			var price = json[0]["price_usd"]
+			var change = json[0]["percent_change_24h"]
+			var marketcap = json[0]["market_cap_usd"]
+			var x = document.getElementById("price-nav")
+			$(x).html('$' + parsePrice2(price))
+			var y = document.getElementById("nav-change")
+			var posneg = positiveOrNegative(change);
+			if(posneg == true) {
+				//means increase
+				y.style.color = "green"
+				$(y).html(change + '%')
+			}else {
+				y.style.color="red"
+				$(y).html(change + '%')
+			}
+			var z = document.getElementById("market-cap")
+			$(z).html('Market Capitalization:   ' + '$' + marketcap)
+		})
+	})
+
+	function parsePrice2(price) {
+		var newPrice = ""
+		var re = /(\d+.\d{2})/
+		newPrice = price.match(re);
+		return newPrice[0];
+	}
+	function positiveOrNegative(change) {
+		if(change > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>

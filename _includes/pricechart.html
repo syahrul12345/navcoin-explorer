@@ -1,0 +1,21 @@
+<div class = "chart-container">
+	<canvas id="myChart"></canvas>
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d')
+		var chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: ['January','Febuary','March','April','May','June','July'],
+				datasets: [{
+					label:'My first Database',
+	            	borderColor: 'rgb(0, 0, 0)',
+	            	data: [0, 10, 5, 2, 20, 30, 45],
+
+				}]
+			},
+			options: {}
+		})
+		chart.canvas.parentNode.style.width ="90%";
+
+	</script>
+</div>

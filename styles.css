@@ -1,0 +1,67 @@
+@font-face {
+	font-family:montserrat;
+	src: url('assets/fonts/montserrat/Montserrat-SemiBold.otf');
+}
+
+.main-body {
+	position: absolute;
+	text-align: center;
+	background-color: #9E829C;
+	/*background-image: url('assets/purple.jpg');*/
+	background-size: cover;
+	width: 100%;
+	height: 100%;
+	color: black;
+}
+
+.navbar-center {
+	position: absolute;
+	left: 42%;
+	top: 10px;
+}
+
+.navbar-default {
+	background-color: #3A3E3B;
+	border-color: #3A3E3B;
+}
+
+.navbar-default .navbar-brand {
+    color: #F0EFF4;
+}
+
+.time-button {
+	margin-left:5px;
+	border-radius: 10px;
+	border-color: #3A3E3B;
+}
+
+.time-button:hover {
+	background-color: #3A3E3B;
+	color: #F0EFF4;
+}
+
+.price {
+	font-family: montserrat;
+	font-size: 80px;
+	font-weight: 20px;
+}
+
+.nav-info {
+	position: relative;
+	float: left;
+	text-align: left;
+	padding-top: 2.5%;
+}
+p {
+	font-family: montserrat;
+	font-weight: 20px
+}
+.change {
+	position: relative;
+	top: -10px;
+}
+
+.chart-container {
+	position: relative;
+	right: -5%;
+}
