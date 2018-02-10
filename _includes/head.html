@@ -18,6 +18,8 @@
 <!---SITE CSS -->
 <link rel = "stylesheet" href = "styles.css" />
 
+
+
 <script>
 	$(document).ready(function() {
 		var url = "https://api.coinmarketcap.com/v1/ticker/nav-coin/"
@@ -38,10 +40,15 @@
 				$(y).html(change + '%')
 			}
 			var z = document.getElementById("market-cap")
-			$(z).html('Market Capitalization:   ' + '$' + marketcap)
+			$(z).html('Market Capitalization:   ' + '$' + parseMarkCapt(marketcap));
 		})
 	})
-
+	function parseMarkCapt(marketCap) {
+		var reMcap = /\d{3}/gi
+		newMarketCap = marketCap.match(reMcap)
+		var mCapArray = [newMarketCap[0],newMarketCap[1],newMarketCap[2]]
+		return mCapArray.join(',');
+	}
 	function parsePrice2(price) {
 		var newPrice = ""
 		var re = /(\d+.\d{2})/

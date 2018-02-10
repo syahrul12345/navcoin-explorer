@@ -1,10 +1,15 @@
 <div class = "chart-container">
 	<canvas id="myChart"></canvas>
+	<script src="js/7day.js" type="text/JavaScript"></script>
 	<script>
 		$(document).ready(function() {
+			//seven data is from the 7day.js script
+			console.log(sevenData)
 			var date = new Date(Date.now());
 			var currentYear = getCurrentYear(date);
-			var currentMonth = getCurrentMonth(date) + 2;
+			var currentMonth = getCurrentMonth(date);
+			var currentDay = getCurrentDay(date)
+			console.log(currentDay)
 			var currentUnixTime = Date.now();
 			threeYearData = {
 				labels: [currentYear-2,currentYear-1,currentYear],
@@ -33,6 +38,15 @@
 		           	yAxisID:"y-axis-usd"
 				}],
 			}
+			sevenDayData = {
+				labels: get7DayRange(currentDay),
+				datasets: [{
+		            borderColor: 'green',
+		           	data: sevenData,
+		           	yAxisID:"y-axis-usd"
+				}],
+			}
+
 			var defautChartName = "1-Year Prices"
 			createChart(oneYearData,defautChartName);
 
@@ -44,6 +58,9 @@
 
 		function getCurrentMonth(date) {
 			return date.getMonth();
+		}
+		function getCurrentDay(date) {
+			return date.getDay();
 		}
 		function get12MonthRange(currentMonth) {
 			//currentMonth args is in index 0-11 for jan to dec
@@ -105,6 +122,24 @@
 			}
 
 		}
+		function get7DayRange(currentDay) {
+			switch(currentDay) {
+				case 0:
+					return ['Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday'];
+				case 1:
+					return ['Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday'];
+				case 2:
+					return ['Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday'];
+				case 3:
+					return ['Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday'];
+				case 4:
+					return ['Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday'];
+				case 5:
+					return ['Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday'];
+				case 6:
+					return ['Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday'];
+			}
+		}
 		
 		function changeChart(type) {
 			if(type == '3y') {
@@ -122,7 +157,7 @@
 			}
 			if(type == '7d') {
 				var chartName = "7-Day Prices"
-				createChart(sixMonthData,chartName)
+				createChart(sevenDayData,chartName)
 			}
 			if(type == '24hr') {
 				var chartName = "24-Hour Prices"
