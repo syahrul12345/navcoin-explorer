@@ -23,6 +23,8 @@ function sevenDayChartData() {
     count++;
     dataUSD.push(USDprice)
   })
+  console.log('the usd price is: ')
+  console.log(dataUSD)
   return [dataUSD,dataSat];
 
 }
