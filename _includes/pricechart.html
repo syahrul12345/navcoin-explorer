@@ -1,15 +1,14 @@
 <div class = "chart-container">
 	<canvas id="myChart"></canvas>
 	<script src="js/7day.js" type="text/JavaScript"></script>
+	<script src="js/24h.js" type="text/JavaScript"></script>
 	<script>
 		$(document).ready(function() {
 			//seven data is from the 7day.js script
-			console.log(sevenData)
 			var date = new Date(Date.now());
 			var currentYear = getCurrentYear(date);
 			var currentMonth = getCurrentMonth(date);
 			var currentDay = getCurrentDay(date)
-			console.log(currentDay)
 			var currentUnixTime = Date.now();
 			threeYearData = {
 				labels: [currentYear-2,currentYear-1,currentYear],
@@ -39,19 +38,57 @@
 				}],
 			}
 			sevenDayData = {
-				labels: get7DayRange(currentDay),
+				labels: get7DayRange(currentDay,sevenData.length),
 				datasets: [{
-		            borderColor: 'green',
-		           	data: sevenData,
+		            borderColor: 'orange',
+		           	data: sevenData[1],
+		           	yAxisID:"y-axis-btc"
+				},{
+					borderColor: 'green',
+		           	data: sevenData[0],
 		           	yAxisID:"y-axis-usd"
 				}],
 			}
+			
+			twentyFourHourData = {
+				labels: parseHour(twentyFourHourData[0]),
+				datasets: [{
+		            borderColor: 'orange',
+		           	data: twentyFourHourData[2],
+		           	yAxisID:"y-axis-btc"
+				},{
+					borderColor: 'green',
+		           	data: twentyFourHourData[1],
+		           	yAxisID:"y-axis-usd"
+				}],
 
+			}
 			var defautChartName = "1-Year Prices"
 			createChart(oneYearData,defautChartName);
 
 
 		})
+		function parseHour(date) {
+			var dateStringArray = []
+			date.forEach(function(value) {
+				if(value > 12) {
+					value = value - 12
+					valueString = parseInt(value) + ' P.M'
+					dateStringArray.push(valueString)
+				}else if(value < 12) {
+					valueString = parseInt(value) + ' A.M'
+					dateStringArray.push(valueString)
+				}else if(value == 24) {
+					valueString = '12 A.M'
+					dateStringArray.push(valueString)
+				}else if(value == 12) {
+					valueString = '12 P.M'
+					dateStringArray.push(valueString)
+				}
+			})
+			return dateStringArray;
+		}
+
 		function getCurrentYear(date) {
 			return date.getFullYear();
 		}
@@ -63,6 +100,7 @@
 			return date.getDay();
 		}
 		function get12MonthRange(currentMonth) {
+			
 			//currentMonth args is in index 0-11 for jan to dec
 			switch (currentMonth) {
 				case 0:
@@ -122,22 +160,29 @@
 			}
 
 		}
-		function get7DayRange(currentDay) {
+		function get7DayRange(currentDay,length) {
+			var emptyArrays = []
+			if(length != 25) {
+				for(var i = 0;i<length-25;i++) {
+					emptyArrays.push("")
+				}
+			}
+			
 			switch(currentDay) {
 				case 0:
-					return ['Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday'];
+					return ['Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday'].concat(emptyArrays);
 				case 1:
-					return ['Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday'];
+					return ['Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday'].concat(emptyArrays);
 				case 2:
-					return ['Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday'];
+					return ['Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday'].concat(emptyArrays);
 				case 3:
-					return ['Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday'];
+					return ['Thursday',"","","",'Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday'].concat(emptyArrays);
 				case 4:
-					return ['Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday'];
+					return ['Friday',"","","",'Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday'].concat(emptyArrays);
 				case 5:
-					return ['Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday'];
+					return ['Saturday',"","","",'Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday'].concat(emptyArrays);
 				case 6:
-					return ['Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday'];
+					return ['Sunday',"","","",'Monday',"","","",'Tuesday',"","","",'Wednesday',"","","",'Thursday',"","","",'Friday',"","","",'Saturday'].concat(emptyArrays);
 			}
 		}
 		
@@ -161,7 +206,7 @@
 			}
 			if(type == '24hr') {
 				var chartName = "24-Hour Prices"
-				createChart(sixMonthData,chartName)
+				createChart(twentyFourHourData,chartName)
 			}
 		}
 
@@ -194,7 +239,8 @@
 	                			drawBorder: false,
 	                		},
 	                		ticks: {
-	                			fontColor: 'black'
+	                			fontColor: 'black',
+	                			autoSkip: false
 	                		}
 	                		
 	                	}],
