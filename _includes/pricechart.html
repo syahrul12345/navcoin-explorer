@@ -2,6 +2,7 @@
 	<canvas id="myChart"></canvas>
 	<script src="js/7day.js" type="text/JavaScript"></script>
 	<script src="js/24h.js" type="text/JavaScript"></script>
+	<script src="js/1y.js" type="text/JavaScript"></script>
 	<script>
 		$(document).ready(function() {
 			//seven data is from the 7day.js script
@@ -10,7 +11,6 @@
 			var currentMonth = getCurrentMonth(date);
 			var currentDay = getCurrentDay(date)
 			var currentUnixTime = Date.now();
-			console.log(sevenData);
 			threeYearData = {
 				labels: [currentYear-2,currentYear-1,currentYear],
 				datasets: [{
@@ -22,19 +22,27 @@
 			}
 
 			oneYearData = {
-				labels: get12MonthRange(currentMonth),
+				labels: get12MonthRange(currentMonth,oneYearBTC.length),
 				datasets: [{
-		            borderColor: 'green',
-		           	data: [0, 10, 5, 2, 20, 30, 45, 25, 89 , 10, 32 , 44],
+		            borderColor: 'orange',
+		           	data: oneYearBTC,
+		           	yAxisID:"y-axis-btc"
+				},{
+					borderColor: 'green',
+		           	data: oneYearUSD,
 		           	yAxisID:"y-axis-usd"
 				}],
 					
 			}
 			sixMonthData = {
-				labels: get6MonthRange(currentMonth),
+				labels: get6MonthRange(currentMonth,sixMonthBTC.length),
 				datasets: [{
-		            borderColor: 'green',
-		           	data: [0, 10, 5, 2, 20, 30],
+		            borderColor: 'orange',
+		           	data: sixMonthBTC,
+		           	yAxisID:"y-axis-btc"
+				},{
+					borderColor: 'green',
+		           	data: sixMonthUSD,
 		           	yAxisID:"y-axis-usd"
 				}],
 			}
@@ -100,63 +108,87 @@
 		function getCurrentDay(date) {
 			return date.getDay();
 		}
-		function get12MonthRange(currentMonth) {
+		function get12MonthRange(currentMonth,length) {
+			var emptyArrays = []
+			if(length != 33) {
+				for(var i =0;i<length-33;i++) {
+					emptyArrays.push("")
+				}
+			}
 			
 			//currentMonth args is in index 0-11 for jan to dec
 			switch (currentMonth) {
 				case 0:
-					return ['Febuary','March','April','May','June','July','August','September','October','November','December','January'];
+					return inserter2(['Febuary','March','April','May','June','July','August','September','October','November','December','January']).concat(emptyArrays);
 				case 1:
-					return ['March','April','May','June','July','August','September','October','November','December','January','Febuary'];
+					return inserter2(['March','April','May','June','July','August','September','October','November','December','January','Febuary']).concat(emptyArrays);
 				case 2:
-					return ['April','May','June','July','August','September','October','November','December','January','Febuary','March'];
+					return inserter2(['April','May','June','July','August','September','October','November','December','January','Febuary','March']).concat(emptyArrays);
 				case 3:
-					return ['May','June','July','August','September','October','November','December','January','Febuary','March','April'];
+					return inserter2(['May','June','July','August','September','October','November','December','January','Febuary','March','April']).concat(emptyArrays);
 				case 4:
-					return ['June','July','August','September','October','November','December','January','Febuary','March','April','May'];
+					return inserter2(['June','July','August','September','October','November','December','January','Febuary','March','April','May']).concat(emptyArrays);
 				case 5:
-					return ['July','August','September','October','November','December','January','Febuary','March','April','May','June'];
+					return inserter2(['July','August','September','October','November','December','January','Febuary','March','April','May','June']).concat(emptyArrays);
 				case 6:
-					return ['August','September','October','November','December','January','Febuary','March','April','May','June','July'];
+					return inserter2(['August','September','October','November','December','January','Febuary','March','April','May','June','July']).concat(emptyArrays);
 				case 7:
-					return ['September','October','November','December','January','Febuary','March','April','May','June','July','August'];
+					return inserter2(['September','October','November','December','January','Febuary','March','April','May','June','July','August']).concat(emptyArrays);
 				case 8:
-					return ['October','November','December','January','Febuary','March','April','May','June','July','August','September'];
+					return inserter2(['October','November','December','January','Febuary','March','April','May','June','July','August','September']).concat(emptyArrays);
 				case 9:
-					return ['November','December','January','Febuary','March','April','May','June','July','August','September','October'];
+					return inserter2(['November','December','January','Febuary','March','April','May','June','July','August','September','October']).concat(emptyArrays);
 				case 10:
-					return ['December','January','Febuary','March','April','May','June','July','August','September','October','November'];
+					return inserter2(['December','January','Febuary','March','April','May','June','July','August','September','October','November']).concat(emptyArrays);
 				case 11:
-					return ['January','Febuary','March','April','May','June','July','August','September','October','November','December'];
+					return inserter2(['January','Febuary','March','April','May','June','July','August','September','October','November','December']).concat(emptyArrays);
 				
 			}
 		}
-		function get6MonthRange(currentMonth) {
+		function inserter2(value) {
+			//insert 2 blank spaces
+			var stopIndex = 34;
+			var currentIndex = 1;
+			while(currentIndex < stopIndex) {
+				value.splice(currentIndex,0,"","")
+				currentIndex += 3; //always one more than how many we are inserting
+			}
+			return value;
+
+		}
+		function get6MonthRange(currentMonth,length) {
+			var emptyArrays = []
+			if(length != 25) {
+				for(var i =0;i<length-25;i++) {
+					emptyArrays.push("")
+				}
+			}
+			
 			switch (currentMonth) {
 				case 0:
-					return ['August','September','October','November','December','January'];
+					return ['August',"","","","",'September',"","","","",'October',"","","","",'November',"","","","",'December',"","","","",'January'].concat(emptyArrays);
 				case 1:
-					return ['September','October','November','December','January','Febuary'];
+					return ['September',"","","","",'October',"","","","",'November',"","","","",'December',"","","","",'January',"","","","",'Febuary'].concat(emptyArrays);
 				case 2:
-					return ['October','November','December','January','Febuary','March'];
+					return ['October',"","","","",'November',"","","","",'December',"","","","",'January',"","","","",'Febuary',"","","","",'March'].concat(emptyArrays);
 				case 3:
-					return ['November','December','January','Febuary','March','April'];
+					return ['November',"","","","",'December',"","","","",'January',"","","","",'Febuary',"","","","",'March',"","","","",'April'].concat(emptyArrays);
 				case 4:
-					return ['December','January','Febuary','March','April','May'];
+					return ['December',"","","","",'January',"","","","",'Febuary',"","","","",'March',"","","","",'April',"","","","",'May'].concat(emptyArrays);
 				case 5:
-					return ['January','Febuary','March','April','May','June'];
+					return ['January',"","","","",'Febuary',"","","","",'March',"","","","",'April',"","","","",'May',"","","","",'June'].concat(emptyArrays);
 				case 6:
-					return ['Febuary','March','April','May','June','July'];
+					return ['Febuary',"","","","",'March',"","","","",'April',"","","","",'May',"","","","",'June',"","","","",'July'].concat(emptyArrays);
 				case 7:
-					return ['March','April','May','June','July','August'];
+					return ['March',"","","","",'April',"","","","",'May',"","","","",'June',"","","","",'July',"","","","",'August'].concat(emptyArrays);
 				case 8:
-					return ['April','May','June','July','August','September'];
+					return ['April',"","","","",'May',"","","","",'June',"","","","",'July',"","","","",'August',"","","","",'September'].concat(emptyArrays);
 				case 9:
-					return ['May','June','July','August','September','October'];
+					return ['May',"","","","",'June',"","","","",'July',"","","","",'August',"","","","",'September',"","","","",'October'].concat(emptyArrays);
 				case 10:
-					return ['June','July','August','September','October','November'];
+					return ['June',"","","","",'July',"","","","",'August',"","","","",'September',"","","","",'October',"","","","",'November'].concat(emptyArrays);
 				case 11:
-					return ['July','August','September','October','November','December'];
+					return ['July',"","","","",'August',"","","","",'September',"","","","",'October',"","","","",'November',"","","","",'December'].concat(emptyArrays);
 				
 			}
 
