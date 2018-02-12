@@ -1,18 +1,36 @@
 <div class = "chart-container">
 	<canvas id="myChart"></canvas>
-	<script src="js/chartData.js" type="text/JavaScript"></script>
+	<script src="js/dataFunctions.js" type="text/JavaScript"></script>
 	<script>
 		$(document).ready(function() {
 
-			setTimeout(function() {
-				//this 2 functions take very long, run a loading screen //
-				var dailyData = pingDailyData();
-				var hourlyData = pingHourlyData();
+			myWorker = new Worker("js/chartData.js")
+			console.log("sending message to worker")
+			myWorker.postMessage("START")
+			myWorker.onmessage = function(e) {
+				console.log("received message from worker")
+				var results = e.data;
+				populate(results)
+				stopWorker();
+
+			}
+			
+		function stopWorker() {
+			console.log("terminated")
+			myWorker.terminate()
+			myWorker = undefined;
+		}
+
+		function populate(results) {
+			//this 2 functions take very long, run a loading screen //
+				var dailyData = results[0];
+				var hourlyData = results[1];
 				// end of 2 long functions
 				var twentyFourHour = getData(24,hourlyData)
 				var sevenDay = getData(7,hourlyData)
 				var sixmonth = getData(6,dailyData)
 				var oneYear = getData(1,dailyData)
+
 
 				var date = new Date(Date.now());
 				var currentYear = getCurrentYear(date);
@@ -83,9 +101,9 @@
 				}
 				var defautChartName = "1-Year Prices"
 				createChart(oneYearData,defautChartName);
-			},2000)
+			}	
+			
 		})
-
 
 		function parseHour(date) {
 			var dateStringArray = []
