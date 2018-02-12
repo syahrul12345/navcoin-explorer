@@ -11,14 +11,14 @@ function getOneYearData() {
   //get data in sats
   xhr.open("GET",proxyUrl+url, false);
   xhr.send();
-  dataSat = getData(xhr.responseText) //data is the price of navcoin in sats
+  var dataSat = getData(xhr.responseText) //data is the price of navcoin in sats
   //get data of BTC prices in USD
   xhr.open("GET",proxyUrl+urlBTC,false);
   xhr.send();
-  dataBTC = getData(xhr.responseText) //dataBTC is the price of BTC in usd
+  var dataBTC = getData(xhr.responseText) //dataBTC is the price of BTC in usd
   
   //convert dataSats into dataUSD
-  dataUSD = []
+  var dataUSD = []
   var count = 0
   var dataUSD = []
   dataBTC.forEach(function(value) {
@@ -31,7 +31,7 @@ function getOneYearData() {
   return [dataUSD,dataSat];
 }
 
-function getData(responseText) {
+function getData1y(responseText) {
   var newArray = []
   var myArr = JSON.parse(responseText);
   var results = myArr["result"]
@@ -44,7 +44,7 @@ function getData(responseText) {
 
 
 
-function getPointsBefore(results,lastindex) {
+function getPointsBefore1y(results,lastindex) {
     //get the latest price from results which corresponds to the roundedtime
 
     //the correct time is now at lastIndex and this will be the updated price; with key of 'C'
@@ -58,7 +58,7 @@ function getPointsBefore(results,lastindex) {
     // i only want dates on the 1st(25points before),5(26points before),10(27 points before),15,20,25 so 5 points per month,
     //6 months, so its a total of 11months x5 (55) + current month 
     
-    lastindex -= offset;
+    var lastindex -= offset;
     var currentpriceSAT = results[lastindex]['C']
     var priceArray = []
     priceArray.push(currentpriceSAT);
@@ -126,17 +126,24 @@ function oneYearSplicer(data) {
 
 }
 
+function getSixMonth(type,oneYearData) {
+  if(type == "USD") {
+    return oneYearData[0].slice(30);
+  }else {
+    return oneYearData[1].slice(30);
+  }
+}
+
+
+
+
 var oneYearData = getOneYearData();
+var onYearUSD = oneYearSplicer(oneYearData[0])
+var oneYearBTC = oneYearSplicer(oneYearData[1])
+var sixMonthUSD = ("USD",oneYearData)
+var sixMonthBTC = ("BTC",oneYearData)
 
-//one year prices
-oneYearUSD = oneYearSplicer(oneYearData[0])
-oneYearBTC = oneYearSplicer(oneYearData[1])
-
-// for 6 months we remove the first 30
-// 6 month prices
-var sixMonthLastIndex = oneYearData[1].length
-sixMonthUSD = oneYearData[0].slice(30);
-sixMonthBTC = oneYearData[1].slice(30);
+//end of 1y script
 
 
 
