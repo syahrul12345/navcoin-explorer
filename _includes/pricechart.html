@@ -4,90 +4,89 @@
 	<script>
 		$(document).ready(function() {
 
-			console.log("before long function")
-			//this 2 functions take very long, run a loading screen //
-			var dailyData = pingDailyData();
-			var hourlyData = pingHourlyData();
-			// end of 2 long functions
+			setTimeout(function() {
+				//this 2 functions take very long, run a loading screen //
+				var dailyData = pingDailyData();
+				var hourlyData = pingHourlyData();
+				// end of 2 long functions
+				var twentyFourHour = getData(24,hourlyData)
+				var sevenDay = getData(7,hourlyData)
+				var sixmonth = getData(6,dailyData)
+				var oneYear = getData(1,dailyData)
 
-			console.log("after long function")
-			var twentyFourHour = getData(24,hourlyData)
-			var sevenDay = getData(7,hourlyData)
-			var sixmonth = getData(6,dailyData)
-			var oneYear = getData(1,dailyData)
+				var date = new Date(Date.now());
+				var currentYear = getCurrentYear(date);
+				var currentMonth = getCurrentMonth(date);
+				var currentDay = getCurrentDay(date)
+				var currentUnixTime = Date.now();
+				
+				threeYearData = {
+					labels: [currentYear-2,currentYear-1,currentYear],
+					datasets: [{
+			            borderColor: 'green',
+			           	data: [10,32,44],
+			           	yAxisID:"y-axis-usd"
+					}],
+						
+				}
 
-			var date = new Date(Date.now());
-			var currentYear = getCurrentYear(date);
-			var currentMonth = getCurrentMonth(date);
-			var currentDay = getCurrentDay(date)
-			var currentUnixTime = Date.now();
-			
-			threeYearData = {
-				labels: [currentYear-2,currentYear-1,currentYear],
-				datasets: [{
-		            borderColor: 'green',
-		           	data: [10,32,44],
-		           	yAxisID:"y-axis-usd"
-				}],
-					
-			}
+				oneYearData = {
+					labels: get12MonthRange(currentMonth,oneYear[1].length),
+					datasets: [{
+			            borderColor: 'orange',
+			           	data: oneYear[1],
+			           	yAxisID:"y-axis-btc"
+					},{
+						borderColor: 'green',
+			           	data: oneYear[0],
+			           	yAxisID:"y-axis-usd"
+					}],
+						
+				}
+				sixMonthData = {
+					labels: get6MonthRange(currentMonth,sixmonth[1].length),
+					datasets: [{
+			            borderColor: 'orange',
+			           	data: sixmonth[1],
+			           	yAxisID:"y-axis-btc"
+					},{
+						borderColor: 'green',
+			           	data: sixmonth[0],
+			           	yAxisID:"y-axis-usd"
+					}],
+				}
+				sevenDayData = {
+					labels: get7DayRange(currentDay,sevenDay[1].length),
+					datasets: [{
+			            borderColor: 'orange',
+			           	data: sevenDay[1],
+			           	yAxisID:"y-axis-btc"
+					},{
+						borderColor: 'green',
+			           	data: sevenDay[0],
+			           	yAxisID:"y-axis-usd"
+					}],
+				}
+				
+				twentyFourHourData = {
+					labels: parseHour(twentyFourHour[0]),
+					datasets: [{
+			            borderColor: 'orange',
+			           	data: twentyFourHour[2],
+			           	yAxisID:"y-axis-btc"
+					},{
+						borderColor: 'green',
+			           	data: twentyFourHour[1],
+			           	yAxisID:"y-axis-usd"
+					}],
 
-			oneYearData = {
-				labels: get12MonthRange(currentMonth,oneYear[1].length),
-				datasets: [{
-		            borderColor: 'orange',
-		           	data: oneYear[1],
-		           	yAxisID:"y-axis-btc"
-				},{
-					borderColor: 'green',
-		           	data: oneYear[0],
-		           	yAxisID:"y-axis-usd"
-				}],
-					
-			}
-			sixMonthData = {
-				labels: get6MonthRange(currentMonth,sixmonth[1].length),
-				datasets: [{
-		            borderColor: 'orange',
-		           	data: sixmonth[1],
-		           	yAxisID:"y-axis-btc"
-				},{
-					borderColor: 'green',
-		           	data: sixmonth[0],
-		           	yAxisID:"y-axis-usd"
-				}],
-			}
-			sevenDayData = {
-				labels: get7DayRange(currentDay,sevenDay[1].length),
-				datasets: [{
-		            borderColor: 'orange',
-		           	data: sevenDay[1],
-		           	yAxisID:"y-axis-btc"
-				},{
-					borderColor: 'green',
-		           	data: sevenDay[0],
-		           	yAxisID:"y-axis-usd"
-				}],
-			}
-			
-			twentyFourHourData = {
-				labels: parseHour(twentyFourHour[0]),
-				datasets: [{
-		            borderColor: 'orange',
-		           	data: twentyFourHour[2],
-		           	yAxisID:"y-axis-btc"
-				},{
-					borderColor: 'green',
-		           	data: twentyFourHour[1],
-		           	yAxisID:"y-axis-usd"
-				}],
-
-			}
-			var defautChartName = "1-Year Prices"
-			createChart(oneYearData,defautChartName);
-
-
+				}
+				var defautChartName = "1-Year Prices"
+				createChart(oneYearData,defautChartName);
+			},2000)
 		})
+
+
 		function parseHour(date) {
 			var dateStringArray = []
 			date.forEach(function(value) {
