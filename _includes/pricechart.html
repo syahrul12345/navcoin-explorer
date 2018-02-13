@@ -325,15 +325,21 @@
 		}
 		function modifyInfoBar(usdPriceRange,chartName) {
 			var usdDiff = String(usdPriceRange[usdPriceRange.length-1] - usdPriceRange[0])
+			if(usdDiff < 0) {
+				var negFlag = "-"
+			}else {
+				var negFlag = ""
+			}
+			console.log("neg flag is " + negFlag)
 			var roundRe =  /\d*\.\d{2}/
 			var usdDiffRounded = usdDiff.match(roundRe)[0]
 			var usdHigh = String(getHigh(usdPriceRange)).match(roundRe)[0];
 			var usdLow = String(getLow(usdPriceRange)).match(roundRe)[0];
-			inject(usdDiffRounded,usdHigh,usdLow,chartName)
+			inject(usdDiffRounded,usdHigh,usdLow,chartName,negFlag)
 
 		}
 		
-		function inject(usdDiffRounded,usdHigh,usdLow,chartName) {
+		function inject(usdDiffRounded,usdHigh,usdLow,chartName,negFlag) {
 			if(chartName === "3-Year Prices") {
 				var name = "3 Year"
 			}else if(chartName === "1-Year Prices") {
@@ -346,8 +352,8 @@
 				var name = "24 hour"
 			}
 			clearBar()
-			$("#price-change").html(usdDiffRounded)
-			$("#change-header").html(`${name}` + " change")
+			$("#price-change").html(negFlag + usdDiffRounded)
+			$("#change-header").html(`${name}` +" change")
 			$("#high-amount").html(usdHigh)
 			$("#high-header").html(`${name}` + " high")
 			$("#low-amount").html(usdLow)
