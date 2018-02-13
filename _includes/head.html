@@ -25,11 +25,11 @@
 		var url = "https://api.coinmarketcap.com/v1/ticker/nav-coin/"
 		var urlTotal = "https://api.coinmarketcap.com/v1/global/"
 		$.getJSON(url,function(json) {
-			var price = json[0]["price_usd"]
+			priceUSD = json[0]["price_usd"]
 			var change = json[0]["percent_change_24h"]
-			marketcap = json[0]["market_cap_usd"]
+			marketcapUSD = json[0]["market_cap_usd"]
 			var x = document.getElementById("price-nav")
-			$(x).html('$' + parsePrice2(price))
+			$(x).html('$' + parsePrice2(priceUSD))
 			var y = document.getElementById("nav-change")
 			var posneg = positiveOrNegative(change);
 			if(posneg == true) {
@@ -41,15 +41,33 @@
 				$(y).html(change + '%')
 			}
 			var z = document.getElementById("market-cap")
-			$(z).html('Market Capitalization:   ' + '$' + parseMarkCapt(marketcap));
+			$(z).html('Market Capitalization:   ' + '$' + parseMarkCapt(marketcapUSD));
 			$.getJSON(urlTotal,function(json) {
-				var totalMCap = json["total_market_cap_usd"]
-				var navDominance = marketcap/totalMCap * 100
+				totalMCapUSD = json["total_market_cap_usd"]
+				var navDominance = marketcapUSD/totalMCapUSD * 100
 				navDominance = Number.parseFloat(navDominance).toPrecision(3)
-				console.log(navDominance)
 				var y = document.getElementById("dominance")
 				$(y).html('NAV Dominance: ' + navDominance + '%')
 			})
+
+		})
+		//this json is to get conversion ratios
+		//attempt to get convertsion rate of ETH AND BTC
+		var urlCurrency = "https://api.fixer.io/latest?base=USD"
+		var urlBTCOnly = "https://api.coinmarketcap.com/v1/ticker/bitcoin/"
+		var urlETHOnly = "https://api.coinmarketcap.com/v1/ticker/ethereum/"
+		$.getJSON(urlBTCOnly,function(json) {
+			btcRate = 1/json[0]["price_usd"]
+			
+		})
+
+		$.getJSON(urlETHOnly,function(json) {
+			ethRate = 1/json[0]["price_usd"]
+		})
+
+		$.getJSON(urlCurrency,function(json) {
+			sgdRate = json["rates"]["SGD"]
+			eurRate = json["rates"]["EUR"]
 
 		})
 	})

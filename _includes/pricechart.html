@@ -22,7 +22,7 @@
 	<script src="js/dataFunctions.js" type="text/JavaScript"></script>
 	<script>
 		$(document).ready(function() {
-
+			setCurrency('$');
 			myWorker = new Worker("js/chartData.js")
 			console.log("sending message to worker")
 			myWorker.postMessage("START")
@@ -33,7 +33,7 @@
 				stopWorker();
 
 			}
-			
+		
 		function stopWorker() {
 			console.log(" workerterminated")
 			myWorker.terminate()
@@ -43,6 +43,80 @@
 		
 			
 		})
+		//priceUSD should not be changed and global
+		//marketcapUSD should not be changed and global
+		//totalmCapUSD should not be changed and global
+		//usdDiffRounded is the rounded price diff in USD
+		//usdHIgh is the is the highest price in USD
+		//usdLow is the lowest price in usd
+		//using the values above, we can now change the currency
+		//neg flag is inside
+
+		function convertUSD() {
+			setCurrency('$')
+			var x = document.getElementById("price-nav")
+			$(x).html(currency + parsePrice2(priceUSD))
+			var x = document.getElementById("price-nav")
+			injectOnCurrencyChange(usdDiffRounded,usdHigh,usdLow,negFlag)
+		}
+
+		function convertBTC() {
+			setCurrency('฿')
+			var x = document.getElementById("price-nav")
+			$(x).html(currency+ parsePriceBtc(String(priceUSD*btcRate)))
+			var btcDiffRounded = roundBtc(usdDiffRounded * btcRate)
+			var btcHigh = roundBtc(usdHigh*btcRate)
+			var btcLow = roundBtc(usdLow* btcRate)
+			injectOnCurrencyChange(btcDiffRounded,btcHigh,btcLow,negFlag)
+		}
+
+		function convertETH() {
+			setCurrency('E')
+			var x = document.getElementById("price-nav")
+			$(x).html(currency+ parsePriceEth(String(priceUSD*ethRate)))
+			var ethDiffRounded = roundEth(usdDiffRounded * ethRate)
+			var ethHigh = roundEth(usdHigh*ethRate)
+			var ethLow = roundEth(usdLow* ethRate)
+
+			injectOnCurrencyChange(ethDiffRounded,ethHigh,ethLow,negFlag)
+
+		}
+		function convertEUR() {
+			setCurrency('€')
+			var x = document.getElementById("price-nav")
+			$(x).html(currency+ parsePrice2(String(priceUSD*eurRate)))
+			var eurDiffRounded = round(usdDiffRounded * eurRate)
+			var eurHigh = round(usdHigh*eurRate)
+			var eurLow = round(usdLow* eurRate);
+			
+			injectOnCurrencyChange(eurDiffRounded,eurHigh,eurLow,negFlag)
+
+		}
+		function convertSGD() {
+			setCurrency('S$')
+			var x = document.getElementById("price-nav")
+			$(x).html(currency+ parsePrice2(String(priceUSD*sgdRate)))
+			var sgdDiffRounded = round(usdDiffRounded * sgdRate);
+			var sgdHigh = round(usdHigh * sgdRate);
+			var sgdLow= round(usdLow* sgdRate);
+
+			injectOnCurrencyChange(sgdDiffRounded,sgdHigh,sgdLow,negFlag)
+
+		}
+		function setCurrency(currencySymbol) {
+			currency = undefined;
+			currency = currencySymbol;
+		}
+		function parsePriceEth(value) {
+			var ethRe = /0.\d{4}/
+			return value.match(ethRe)[0]
+		}
+		function parsePriceBtc(value) {
+			var ethRe = /0.\d{6}/
+			return value.match(ethRe)[0]
+		}
+
+
 		function populate(results) {
 			//this 2 functions take very long, run a loading screen //
 				var dailyData = results[0];
@@ -326,19 +400,32 @@
 		function modifyInfoBar(usdPriceRange,chartName) {
 			var usdDiff = String(usdPriceRange[usdPriceRange.length-1] - usdPriceRange[0])
 			if(usdDiff < 0) {
-				var negFlag = "-"
+				negFlag = "-"
 			}else {
-				var negFlag = "+"
+				negFlag = "+"
 			}
-			console.log("neg flag is " + negFlag)
 			var roundRe =  /\d*\.\d{2}/
-			var usdDiffRounded = usdDiff.match(roundRe)[0]
-			var usdHigh = String(getHigh(usdPriceRange)).match(roundRe)[0];
-			var usdLow = String(getLow(usdPriceRange)).match(roundRe)[0];
+			usdDiffRounded = usdDiff.match(roundRe)[0]
+			usdHigh = round(getHigh(usdPriceRange))
+			usdLow = round(getLow(usdPriceRange))
 			inject(usdDiffRounded,usdHigh,usdLow,chartName,negFlag)
 
 		}
+		function round(value) {
+			var roundRe =  /\d*\.\d{2}/
+			return String(value).match(roundRe)[0];
+		}
 		
+		function roundBtc(value) {
+			var cryptoRe = /0.\d{6}/
+			return String(value).match(cryptoRe)[0];
+		}
+		function roundEth(value) {
+			var cryptoRe = /0.\d{4}/
+			return String(value).match(cryptoRe)[0];
+
+		}
+
 		function inject(usdDiffRounded,usdHigh,usdLow,chartName,negFlag) {
 			if(chartName === "3-Year Prices") {
 				var name = "3 Year"
@@ -352,12 +439,19 @@
 				var name = "24 hour"
 			}
 			clearBar()
-			$("#price-change").html(negFlag + usdDiffRounded)
-			$("#change-header").html(`${name}` +" change")
-			$("#high-amount").html(usdHigh)
+			$("#price-change").html(negFlag +currency+ usdDiffRounded)
+			$("#change-header").html(`${name}` + " change")
+			$("#high-amount").html(currency+usdHigh)
 			$("#high-header").html(`${name}` + " high")
-			$("#low-amount").html(usdLow)
+			$("#low-amount").html(currency+ usdLow)
 			$("#low-header").html(`${name}` + " low")
+
+		}
+		function injectOnCurrencyChange(currDiffRounded,currHigh,currLow,negFlag) {
+			clearBarOnCurrencyChange()
+			$("#price-change").html(negFlag +currency+ currDiffRounded)
+			$("#high-amount").html(currency+currHigh)
+			$("#low-amount").html(currency+ currLow)
 
 		}
 		function clearBar() {
@@ -367,6 +461,12 @@
 			$("#high-header").html("")
 			$("#low-amount").html("")
 			$("#low-header").html("")
+
+		}
+		function clearBarOnCurrencyChange(){
+			$("#price-change").html("")
+			$("#high-amount").html("")
+			$("#low-amount").html("")
 
 		}
 

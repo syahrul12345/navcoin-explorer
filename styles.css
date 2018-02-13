@@ -70,6 +70,7 @@ p {
 }
 .change {
 	position: relative;
+	font-size: 15px;
 	top: -10px;
 }
 
@@ -81,4 +82,22 @@ p {
 	color: #F0EFF4;
 	font-family: montserrat;
 	font-size: 20px;
+}
+
+ul {
+	-webkit-padding-start: 0px;
+}
+.currBtn {
+
+		background-color: 'black';
+		font-family: montserrat;
+		background-color: transparent;
+		border-color: #F0EFF4;
+		padding-top: 2px;
+		border-width: 3px;
+		border-radius: 3px;
+		color: #F0EFF4;
+}
+.currBtn::after {
+	padding-right: 10px
 }
