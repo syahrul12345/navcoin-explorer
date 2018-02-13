@@ -6,23 +6,31 @@
 .main-body {
 	position: absolute;
 	text-align: center;
-	background-color: #9E829C;
+	background-color: #7d5ab5;
 	/*background-image: url('assets/purple.jpg');*/
 	background-size: cover;
 	width: 100%;
-	height: 100%;
+	height:100%;
 	color: black;
+}
+
+.content {
+	position: relative;
+}
+
+.navbar {
+	margin-bottom: 0px
 }
 
 .navbar-center {
 	position: absolute;
 	left: 42%;
-	top: 10px;
+	top: 11px;
 }
 
 .navbar-default {
-	background-color: #3A3E3B;
-	border-color: #3A3E3B;
+	background-color: transparent;
+	border-color: transparent;
 }
 
 .navbar-default .navbar-brand {
@@ -32,7 +40,9 @@
 .time-button {
 	margin-left:5px;
 	border-radius: 10px;
-	border-color: #3A3E3B;
+	border-color: transparent;
+	background-color: transparent;
+	color: #F0EFF4;
 }
 
 .time-button:hover {

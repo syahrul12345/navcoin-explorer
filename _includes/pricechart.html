@@ -21,6 +21,9 @@
 			myWorker = undefined;
 		}
 
+		
+			
+		})
 		function populate(results) {
 			//this 2 functions take very long, run a loading screen //
 				var dailyData = results[0];
@@ -55,7 +58,7 @@
 			           	data: oneYear[1],
 			           	yAxisID:"y-axis-btc"
 					},{
-						borderColor: 'green',
+						borderColor: 'white',
 			           	data: oneYear[0],
 			           	yAxisID:"y-axis-usd"
 					}],
@@ -68,7 +71,7 @@
 			           	data: sixmonth[1],
 			           	yAxisID:"y-axis-btc"
 					},{
-						borderColor: 'green',
+						borderColor: 'white',
 			           	data: sixmonth[0],
 			           	yAxisID:"y-axis-usd"
 					}],
@@ -80,7 +83,7 @@
 			           	data: sevenDay[1],
 			           	yAxisID:"y-axis-btc"
 					},{
-						borderColor: 'green',
+						borderColor: 'white',
 			           	data: sevenDay[0],
 			           	yAxisID:"y-axis-usd"
 					}],
@@ -93,7 +96,7 @@
 			           	data: twentyFourHour[2],
 			           	yAxisID:"y-axis-btc"
 					},{
-						borderColor: 'green',
+						borderColor: 'white',
 			           	data: twentyFourHour[1],
 			           	yAxisID:"y-axis-usd"
 					}],
@@ -102,8 +105,6 @@
 				var defautChartName = "1-Year Prices"
 				createChart(oneYearData,defautChartName);
 			}	
-			
-		})
 
 		function parseHour(date) {
 			var dateStringArray = []
@@ -270,8 +271,15 @@
 				createChart(twentyFourHourData,chartName)
 			}
 		}
-
+		function clearChart() {
+			// dont want to clear the global variables which i already declared
+			console.log("clearing chart")
+			$("#myChart").remove()
+			$(".chart-container").append('<canvas id="myChart"></canvas>');
+			console.log("chart cleared")
+		}
 		function createChart(newData,chartName) {
+			clearChart()
 			config = createConfig(newData,chartName);
 			var ctx = document.getElementById('myChart').getContext('2d')
 			var chart = new Chart(ctx, config)
@@ -315,14 +323,14 @@
 	                    	scaleLabel: {
 	                    		display: true,
 	                    		labelString: 'Price (USD)',
-	                    		fontColor: 'green',
+	                    		fontColor: 'white',
 	                    	},
 	                        gridLines: {
 	                            drawBorder: true,
 	                            display: false,
 	                        },
 	                        ticks : {
-	                        	fontColor: 'green'
+	                        	fontColor: 'white'
 	                        }
 	                        
 	                    },{

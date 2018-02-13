@@ -44,10 +44,21 @@
 		})
 	})
 	function parseMarkCapt(marketCap) {
-		var reMcap = /\d{3}/gi
-		newMarketCap = marketCap.match(reMcap)
-		var mCapArray = [newMarketCap[0],newMarketCap[1],newMarketCap[2]]
-		return mCapArray.join(',');
+		//if market cap is in the sub 100,000,000 to 999,999,999
+		if(marketCap >= 100000000 && marketCap <= 999999999) {
+			var reMcap = /\d{3}/gi
+			newMarketCap = marketCap.match(reMcap)
+			var mCapArray = [newMarketCap[0],newMarketCap[1],newMarketCap[2]]
+			return mCapArray.join(',');
+		}else if(marketCap >= 1000000000 && marketCap <= 9999999999) {
+			var reMCap = /(\d{1})(\d{3})(\d{3})(\d{3})/
+			newMarketCap = marketCap.match(reMCap)
+			var mCapArray = [newMarketCap[0],newMarketCap[1],newMarketCap[2],newMarketCap[3]]
+			return mCapArray.join(',')
+		}
+
+
+		
 	}
 	function parsePrice2(price) {
 		var newPrice = ""
