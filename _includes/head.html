@@ -23,10 +23,11 @@
 <script>
 	$(document).ready(function() {
 		var url = "https://api.coinmarketcap.com/v1/ticker/nav-coin/"
+		var urlTotal = "https://api.coinmarketcap.com/v1/global/"
 		$.getJSON(url,function(json) {
 			var price = json[0]["price_usd"]
 			var change = json[0]["percent_change_24h"]
-			var marketcap = json[0]["market_cap_usd"]
+			marketcap = json[0]["market_cap_usd"]
 			var x = document.getElementById("price-nav")
 			$(x).html('$' + parsePrice2(price))
 			var y = document.getElementById("nav-change")
@@ -41,6 +42,15 @@
 			}
 			var z = document.getElementById("market-cap")
 			$(z).html('Market Capitalization:   ' + '$' + parseMarkCapt(marketcap));
+			$.getJSON(urlTotal,function(json) {
+				var totalMCap = json["total_market_cap_usd"]
+				var navDominance = marketcap/totalMCap * 100
+				navDominance = Number.parseFloat(navDominance).toPrecision(3)
+				console.log(navDominance)
+				var y = document.getElementById("dominance")
+				$(y).html('NAV Dominance: ' + navDominance + '%')
+			})
+
 		})
 	})
 	function parseMarkCapt(marketCap) {
