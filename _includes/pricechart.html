@@ -61,7 +61,7 @@
 		}
 
 		function convertBTC() {
-			setCurrency('฿')
+			setCurrency('B')
 			var x = document.getElementById("price-nav")
 			$(x).html(currency+ parsePriceBtc(String(priceUSD*btcRate)))
 			var btcDiffRounded = roundBtc(usdDiffRounded * btcRate)
@@ -134,10 +134,14 @@
 				var currentUnixTime = Date.now();
 				
 				threeYearData = {
-					labels: [currentYear-2,currentYear-1,currentYear],
+					labels: get12MonthRange(currentMonth,oneYear[1].length),
 					datasets: [{
-			            borderColor: 'green',
-			           	data: [10,32,44],
+			            borderColor: 'orange',
+			           	data: oneYear[1],
+			           	yAxisID:"y-axis-btc"
+					},{
+						borderColor: 'white',
+			           	data: oneYear[0],
 			           	yAxisID:"y-axis-usd"
 					}],
 						
