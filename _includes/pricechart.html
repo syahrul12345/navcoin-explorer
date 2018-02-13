@@ -16,7 +16,7 @@
 			}
 			
 		function stopWorker() {
-			console.log("terminated")
+			console.log(" workerterminated")
 			myWorker.terminate()
 			myWorker = undefined;
 		}
@@ -273,10 +273,8 @@
 		}
 		function clearChart() {
 			// dont want to clear the global variables which i already declared
-			console.log("clearing chart")
 			$("#myChart").remove()
 			$(".chart-container").append('<canvas id="myChart"></canvas>');
-			console.log("chart cleared")
 		}
 		function createChart(newData,chartName) {
 			clearChart()
