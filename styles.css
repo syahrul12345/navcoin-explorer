@@ -16,6 +16,7 @@
 
 .content {
 	position: relative;
+	background-color: #7d5ab5;
 }
 
 .navbar {
@@ -74,4 +75,9 @@ p {
 .chart-container {
 	position: relative;
 	right: -5%;
+}
+#info-bar {
+	color: #F0EFF4;
+	font-family: montserrat;
+	font-size: 20px;
 }

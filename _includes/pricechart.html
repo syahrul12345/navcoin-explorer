@@ -1,4 +1,23 @@
 <div class = "chart-container">
+	<div class = "container-fluid">
+		<div class = "row" id="info-bar">
+			<div class = "col-md-4 ">
+				<p id="price-change"></p>
+				<p id="change-header"></p>
+
+			</div>
+			<div class = "col-md-4 ">
+				<p id="high-amount"></p>
+				<p id="high-header"></p>
+
+			</div>
+			<div class = "col-md-4 ">
+				<p id ="low-amount"></p>
+				<p id = "low-header"></p>
+
+			</div>
+		</div>
+	</div>
 	<canvas id="myChart"></canvas>
 	<script src="js/dataFunctions.js" type="text/JavaScript"></script>
 	<script>
@@ -33,7 +52,6 @@
 				var sevenDay = getData(7,hourlyData)
 				var sixmonth = getData(6,dailyData)
 				var oneYear = getData(1,dailyData)
-
 
 				var date = new Date(Date.now());
 				var currentYear = getCurrentYear(date);
@@ -277,13 +295,83 @@
 			$(".chart-container").append('<canvas id="myChart"></canvas>');
 		}
 		function createChart(newData,chartName) {
+		
+		//example of a newData for reference,
+		// twentyFourHourData = {
+		// 			labels: parseHour(twentyFourHour[0]),
+		// 			datasets: [{
+		// 	            borderColor: 'orange',
+		// 	           	data: twentyFourHour[2],
+		// 	           	yAxisID:"y-axis-btc"
+		// 			},{
+		// 				borderColor: 'white',
+		// 	           	data: twentyFourHour[1],
+		// 	           	yAxisID:"y-axis-usd"
+		// 			}],
+
+		// 		}
+
+		//the information that contains the pointsi s always in the newData['datasets'][index]['data'] where 0 index
+		// is for btc and 1 index is for usd
+
 			clearChart()
-			config = createConfig(newData,chartName);
+			var usdPriceRange = newData['datasets'][1]['data']
+			modifyInfoBar(usdPriceRange,chartName)
+			
+			var config = createConfig(newData,chartName);
 			var ctx = document.getElementById('myChart').getContext('2d')
 			var chart = new Chart(ctx, config)
 			chart.canvas.parentNode.style.width ="90%";
 		}
+		function modifyInfoBar(usdPriceRange,chartName) {
+			var usdDiff = String(usdPriceRange[usdPriceRange.length-1] - usdPriceRange[0])
+			var roundRe =  /\d*\.\d{2}/
+			var usdDiffRounded = usdDiff.match(roundRe)[0]
+			var usdHigh = String(getHigh(usdPriceRange)).match(roundRe)[0];
+			var usdLow = String(getLow(usdPriceRange)).match(roundRe)[0];
+			inject(usdDiffRounded,usdHigh,usdLow,chartName)
+
+		}
 		
+		function inject(usdDiffRounded,usdHigh,usdLow,chartName) {
+			if(chartName === "3-Year Prices") {
+				var name = "3 Year"
+			}else if(chartName === "1-Year Prices") {
+				var name = "1 year"
+			}else if(chartName === "6-Month Prices") {
+				var name = "6 month"
+			}else if(chartName === "7-Day Prices") {
+				var name = "7 day"
+			}else if(chartName ==="24-Hour Prices"){
+				var name = "24 hour"
+			}
+			clearBar()
+			$("#price-change").html(usdDiffRounded)
+			$("#change-header").html(`${name}` + " change")
+			$("#high-amount").html(usdHigh)
+			$("#high-header").html(`${name}` + " high")
+			$("#low-amount").html(usdLow)
+			$("#low-header").html(`${name}` + " low")
+
+		}
+		function clearBar() {
+			$("#price-change").html("")
+			$("#change-header").html("")
+			$("#high-amount").html("")
+			$("#high-header").html("")
+			$("#low-amount").html("")
+			$("#low-header").html("")
+
+		}
+
+		function getHigh(usdPriceRange) {
+			return Math.max.apply([],usdPriceRange)
+		}
+		function getLow(usdPriceRange) {
+			return Math.min.apply([],usdPriceRange)
+		}
+		
+				
 		function createConfig(newData,chartName) {
 			var configInner = {
 				type: 'line',
@@ -293,7 +381,7 @@
 	                title:{
 	                    display: true,
 	                    text: chartName,
-	                    fontColor: 'black',
+	                    fontColor: '#F0EFF4',
 	                    fontSize: 20
 	                },
 	                scales: {
