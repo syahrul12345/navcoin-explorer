@@ -1,3 +1,5 @@
+<!--- Wallet generator script -->
+<script src="./js/generate.js"></script>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -9,6 +11,11 @@
     	<li><button class="time-button" onclick="changeChart('6m')">6m</button></li>
     	<li><button class="time-button" onclick="changeChart('7d')">7d</button></li>
     	<li><button class="time-button" onclick="changeChart('24hr')">24hr</button></li>
-	</ul>
+      
+	  </ul>
+    <ul class = "nav navbar-nav navbar-right">
+      <li><button id = "generate" class ="generate" onclick="generate()">GENERATE</button></li>
+    </ul>
+    
   </div>
 </nav>

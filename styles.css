@@ -29,6 +29,22 @@
 	top: 11px;
 }
 
+.navbar-right {
+	position: relative;
+	float:right;
+	top: 11px;
+	right: 20px;
+}
+
+.generate {
+	background-color: transparent;
+	border-color: transparent;
+	border-color:#F0EFF4;
+	font-size:20px;
+	font-family: montserrat;
+	color: #F0EFF4;
+}
+
 .navbar-default {
 	background-color: transparent;
 	border-color: transparent;
