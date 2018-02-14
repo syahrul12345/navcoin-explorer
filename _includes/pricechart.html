@@ -395,6 +395,22 @@
 			clearChart()
 			var usdPriceRange = newData['datasets'][1]['data']
 			modifyInfoBar(usdPriceRange,chartName)
+			if(currency == "$") {
+				convertUSD()
+
+			}else if (currency == "B") {
+				convertBTC()
+
+			}else if (currency == "E") {
+				convertETH()
+
+			}else if (currency == "'€'") {
+				convertEUR()
+
+			}else if (currency == "S$") {
+				convertSGD()
+
+			}
 			
 			var config = createConfig(newData,chartName);
 			var ctx = document.getElementById('myChart').getContext('2d')
