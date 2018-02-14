@@ -11,9 +11,7 @@ var base58 = require('bs58')
 var wif = require('wif')
 
 function generate() {
- 
   generateOne(1);
-
 }
 
 function generateOne(numToGenerate) {

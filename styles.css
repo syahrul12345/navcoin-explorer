@@ -3,6 +3,22 @@
 	src: url('assets/fonts/montserrat/Montserrat-SemiBold.otf');
 }
 
+table, th, td {
+    border: 1px solid black;
+}
+
+table, th {
+	text-align: left;
+	width: 100px;
+}
+table, td {
+	width: 200px;
+}
+.table-body {
+	position: relative;
+	
+}
+
 .main-body {
 	position: absolute;
 	text-align: center;
