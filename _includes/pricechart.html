@@ -416,7 +416,7 @@
 			var config = createConfig(newData,chartName);
 			var ctx = document.getElementById('myChart').getContext('2d')
 			var chart = new Chart(ctx, config)
-			chart.canvas.parentNode.style.width ="90%";
+			chart.canvas.parentNode.style.width ="100%";
 		}
 		function modifyInfoBar(usdPriceRange,chartName) {
 			var usdDiff = String(usdPriceRange[usdPriceRange.length-1] - usdPriceRange[0])
