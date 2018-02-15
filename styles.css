@@ -44,11 +44,11 @@
     font-size: 18px;
 }
 
-.generate {
+.right-button {
 	background-color: transparent;
 	border-color: transparent;
 	border-color:#F0EFF4;
-	font-size:20px;
+	font-size:18px;
 	font-family: montserrat;
 	color: #F0EFF4;
 }
