@@ -11,7 +11,18 @@ var base58 = require('bs58')
 var wif = require('wif')
 
 function generate() {
-  generateOne(1);
+  var publicAddress = document.getElementById('publicAddress').innerHTML;
+  if(publicAddress !== '') {
+    if(confirm('ENSURE THAT YOU HAVE SAVED THE PRIVATE KEY. BY CLICKING OK , A NEW PUBLIC ADRESS WITH A NEW PRIVATE KEY WILL BE DISPLAYED, AND THE PREVIOUS PRIVATEKEY WILL NO LONGER BE RETRIEAVABLE')) {
+      if(confirm('Are you very very very sure that you have saved the private key')) {
+        generateOne(1)
+      }
+    }
+  
+  }else {
+    generateOne(1);
+  }
+  
 }
 
 function generateOne(numToGenerate) {
@@ -37,8 +48,12 @@ function generateOne(numToGenerate) {
   qrPriv.addData(privateKey);
   qrPriv.make();
   var qrPrivImage = qrPriv.createImgTag(4, 8);
-  console.log(privateKey)
-  console.log(publicAddress)
+  document.getElementById('publicAddress').innerHTML = publicAddress
+  document.getElementById('privateKey').innerHTML = privateKey
+  document.getElementById('pubkey-qr-0').innerHTML = qrPubImage
+  document.getElementById('privkey-qr-0').innerHTML = qrPrivImage
+
+
 }
 
 
