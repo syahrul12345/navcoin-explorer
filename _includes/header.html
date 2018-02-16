@@ -1,4 +1,31 @@
 <!--- Wallet generator script -->
+<script>
+  var navAddress = "NcVqgJKR6uzVs9kjC1SgJgD6SEzy7fzQEU" //example
+  var navTxId = "a899edb7665b21a6722ff73bca907ab54e26c9a55b2e57b29dfb6c73f333c51b" //example
+  function search() {
+    var query = document.querySelector("#searchBar").value
+    var suggestionBox = document.querySelector(".suggestions")
+    
+    if(query.length == navAddress.length) {
+      //query is of adress type
+      suggestionBox.classList.add("show")
+      document.querySelector("#query").innerHTML = query
+      document.querySelector("#queryType").innerHTML = "ADDRESS"
+
+
+    }else if(query.length == navTxId.length) {
+      //query is of tx id type
+      suggestionBox.classList.add("show")
+      document.querySelector("#query").innerHTML = query
+      document.querySelector("#queryType").innerHTML = "TX HASH"
+    }else {
+      suggestionBox.classList.remove("show")
+      document.querySelector("#query").innerHTML = ""
+      document.querySelector("#queryType").innerHTML = ""
+    }
+  }
+</script>
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -13,7 +40,7 @@
       
 	  </ul>
     <ul class = "nav navbar-nav navbar-right">
-      <li><a class ="right-button" href="wallet.html">EXPLORE</a>
+      <li><a class ="right-button">EXPLORE</a>
       </li>
       <li><a class ="right-button" href="wallet.html">GENERATE</a>
       </li>
@@ -21,3 +48,17 @@
     
   </div>
 </nav>
+<div>
+  <!-- think about this part below 
+<form class='search'>
+    <div class = "container-fluid">
+      <div class = "row">
+        <input type="text" id="searchBar" onkeyup="search()" placeholder="Search Addresses or TX Hashes">
+      </div>
+      <div class = "suggestions row">
+        <p id="query"></p>
+        <p id="queryType"></p>
+      </div>
+    </div>
+</form> -->
+</div>
