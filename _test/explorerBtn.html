@@ -14,8 +14,8 @@
 <style>
 .popuptext {
 	visibility: hidden;
-    width: 160px;
-    background-color: #555;
+    width: 300px;
+    background-color: transparent;
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -31,6 +31,22 @@
     -webkit-animation: fadeIn 1s;
     animation: fadeIn 1s;
 }
+.searchbar {
+	position: relative;
+	background-color: black;
+	color:#F0EFF4;
+	border: 2px solid black;
+	border-radius: 5px;
+	width: 100%
+
+
+}
+
+
+.navbar {
+	background-color: black
+}
+
 @-webkit-keyframes fadeIn {
     from {opacity: 0;} 
     to {opacity: 1;}
@@ -46,12 +62,12 @@
 	function appearPop() {
 		var popup = document.getElementById("myPopup");
 		console.log(popup)
-		popup.classList.add("show")
+		popup.classList.toggle("show")
 	}
 
 </script>
 
-<!--- Wallet generator script -->
+<body style="background-color: #7d5ab5">
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -67,4 +83,14 @@
     
   </div>
 </nav>
-<span class="popuptext" id="myPopup">Popup text...</span>
+<span class="popuptext" id="myPopup">
+	<div class="form-group">
+		<div class="input-group">
+			<input class="searchbar" type="text" placeholder="Address,TX ids or contracts...">
+			<span class="input-group-btn">
+				<button type="submit"><i class="fa fa-search"></i></button>
+			</span>
+		</div>
+	</div>
+</span>
+</body>
